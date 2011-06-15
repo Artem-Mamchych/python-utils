@@ -11,12 +11,12 @@ repository = {"alias1":"file_url1"}
 '''
 import urllib2
 import sys
+import os.path
+import json
 
-filelist_url = "http://dl.dropbox.com/u/21385319/config/filelist.py"
-filelist = {
-            'switchall': "http://dl.dropbox.com/u/21385319/build/switch-all.bat",
-            'build': "http://dl.dropbox.com/u/21385319/build/pim-eclipse.txt"
-            }
+filelist_filename = "filelist.json"
+filelist_url = "http://dl.dropbox.com/u/======/config/filelist.py"
+filelist = {}
 
 def download_file(url):
     #if not url.startswith("http://"):
@@ -49,6 +49,18 @@ def download_filelist():
     print "Downloads filelist"
     return 0
 
+def init_filelist():
+    print " filelist: "
+    if os.path.isfile(filelist_filename):
+        print "file..init filelist"
+        if os.path.exists(filelist_filename):
+            try:
+                filelist = json.load(open(filelist_filename))
+            except:
+                print "ERROR OPENING JSON!"
+
+    return 0
+
 def resolve_file(alias):
     print "Resolves files by given alias name from filelist dictionary"
     if alias in filelist:
@@ -73,6 +85,20 @@ def get_file(filepath):
 
 def main():
     for arg in sys.argv[1:]:
+        init_filelist()
+        print "----"
+        try:
+            filelist = json.load(open(filelist_filename))
+        except:
+            print "ERROR OPENING JSON!"
+        print filelist
+        print "----"
+        for k, v in filelist:
+            #for i in range(len(v)):
+            print "%s=" % (k) #len(v) #v[0]
+                #print "%s=%s" % (k, v[0]) #len(v) #v[0]
+        print "----"
+        #print filelist[0].get("todo.txt")
         get_file(arg)
     return 0
 
