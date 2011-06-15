@@ -6,8 +6,8 @@ Created on Jun 14, 2011
 import os
 import json
 
-dropbox_folder_location = "d:\\Dropbox\\Public"
-dropbox_baseurl = "http://dl.dropbox.com/u/YOUR_ID"
+dropbox_folder_location = "E:\\Dropbox\\Public"
+dropbox_baseurl = "http://dl.dropbox.com/u/21385319"
 filelist_filename = "filelist.json"
 files_count = 0
 
@@ -22,7 +22,7 @@ def scan_dirs():
             url = url.replace("\\", "/")
             print "File: %s \t\tUrl: %s" % (name, url)
             if not filelist.has_key(name):
-                filelist[name] = [url]
+                filelist[name] = url
 
     json.dump(filelist, file)
     return 0

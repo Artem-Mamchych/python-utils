@@ -5,15 +5,24 @@ Created on Jun 14, 2011
 License: BSD
 
 TODO: replace all %20 by spaces
-TODO: fix progress counter
-TODO: if argument not starts with http:// etc - download file from dropbox
-repository = {"alias1":"file_url1"}
+TODO: setting filelist download url; -f use filelist with specified name;
+ -s=name search alias which contains 'name' ; auto-download filelist
 '''
 import urllib2
 import sys
 import os.path
 import json
 
+helpstring = "get.py is lightweight wget replacement.\n Usage: %s [-p] [-v] [-h] \
+url1 url2 urlN\nOptions\
+\n\t-p\tPrints filelist content as 'alias' = 'url' pairs \
+\n\t-v\tPrints version info \
+\n\t-h\tPrints this help message \
+" % sys.argv[0]
+
+version = 0.1
+latestversion_url = "https://raw.github.com/TQFP64/python-utils/master/src/get.py"
+versionstring = "%s version: %s  Latest version avalible at:\n %s" % (sys.argv[0], version, latestversion_url)
 filelist_filename = "filelist.json"
 filelist_url = "http://dl.dropbox.com/u/======/config/filelist.py"
 filelist = {}
@@ -37,45 +46,39 @@ def download_file(url):
 
         file_size_dl += block_sz
         f.write(buffer)
+        persents_progress = file_size_dl * 100. / file_size
+        if persents_progress > 100.:
+            persents_progress = 100.
+            file_size_dl = file_size
         if file_size > block_sz:
-            status = r"%10d  [%3.0f%%]" % (file_size_dl, file_size_dl * 100. / file_size)
+            status = r"%10d  [%3.0f%%]" % (file_size_dl, persents_progress)
             status = status + chr(8)*(len(status)+1)
             print status,
 
     f.close()
     return 0
 
-def download_filelist():
-    print "Downloads filelist"
-    return 0
-
 def init_filelist():
-    print " filelist: "
     if os.path.isfile(filelist_filename):
-        print "file..init filelist"
         if os.path.exists(filelist_filename):
             try:
-                filelist = json.load(open(filelist_filename))
+                dict = json.load(open(filelist_filename))
             except:
                 print "ERROR OPENING JSON!"
+                sys.exit(1)
 
-    return 0
-
-def resolve_file(alias):
-    print "Resolves files by given alias name from filelist dictionary"
-    if alias in filelist:
-        print "alias found"
-    return 0
+    return dict
 
 #Downloads or Resolves file
 #Order:
 #1. if filepath starts with http:// or etc - try download_file(filepath)
 #2. otherwise - search in filelist for alias and download_file(filelist.get(filepath))
 #3. if not in filelist - try download_file()
-def get_file(filepath):
+def get_file(filepath, filelist):
     if not (filepath.startswith("http://") or filepath.startswith("www.") or filepath.startswith("ftp://")):
         if filepath in filelist:
             print "%s found in filelist: %s" % (filepath, filelist.get(filepath))
+            download_file(filelist.get(filepath))
         else:
             print "%s not found in filelist" % (filepath)
     else:
@@ -83,23 +86,31 @@ def get_file(filepath):
         #check for errors
     return 0
 
+def download_filelist():
+    print "Downloads filelist"
+    return 0
+
+"""
+Parses current option and runs its action, returns True
+If argument not an option returns False 
+"""
+def option(option, filelist):
+    if option == "-p":
+        for key in filelist:
+            print "%s = %s" % (key, filelist[key])
+    elif option == "-h":
+        print helpstring
+    elif option == "-v":
+        print versionstring
+    else :
+        return False 
+    return True    
+
 def main():
     for arg in sys.argv[1:]:
-        init_filelist()
-        print "----"
-        try:
-            filelist = json.load(open(filelist_filename))
-        except:
-            print "ERROR OPENING JSON!"
-        print filelist
-        print "----"
-        for k, v in filelist:
-            #for i in range(len(v)):
-            print "%s=" % (k) #len(v) #v[0]
-                #print "%s=%s" % (k, v[0]) #len(v) #v[0]
-        print "----"
-        #print filelist[0].get("todo.txt")
-        get_file(arg)
+        filelist = init_filelist()
+        if not option(arg, filelist):
+            get_file(arg, filelist)
     return 0
 
 if __name__ == "__main__":
