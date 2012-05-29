@@ -1,0 +1,41 @@
+add clipboard text diff tool
+
+-force use Input flag
+
+*1 text1 use
+*2 text2 use and diff with text1
+
+Add menus::
+1. HA major artifact names menu
+2. Skype chat:
+можесь запустить в инкверисе и скинуть 
+mvn dependency:tree > tree
+---
+
+Google Libraries API
+https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.js
+https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.js
+
+file extentions:(numbered menu) {
+*.java
+*.jsp
+*.js
+*.css
+*.xml
+*.properties
+0: *Controller.java
+}
+
+$('#accept-request-send').triggerHandler('click');
+
+$('#cboxLoadedContent #refundAmountSwitch').is(":checked")
+
+$.colorbox.resize();
+$.colorbox.close();
+
+enable
+$('#cboxLoadedContent #pdp-amount-switch').removeAttr("disabled");
+
+desable
+$('#cboxLoadedContent #pdp-amount-switch').attr('disabled', true);
+

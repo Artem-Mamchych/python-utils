@@ -1,0 +1,63 @@
+﻿"""
+FEATURES::
+diff tool:
+gets diff beyond strings:
+$("input#username").val("testss_qa1@homeaway.com"); $("input#password").val("test456");
+$("input#username").val("amamchych@homeaway.com"); $("input#password").val("test456"); 
+will return:
+testss_qa1
+and amamchych
+
+menuObj = createMenu(key, name, )
+menuObj.add(name)
+
+API::
+
+
+alive: http://wiki/display/Connect/Environments
+http://devsvr01-haodash-dashboard-test.wvrgroup.internal:8080/alive.txt
+http://devsvr04-haodash-dashboard-test.wvrgroup.internal:8080/alive.txt
+
+http://devjava01-haodash-dashboard-stage.wvrgroup.internal:8080/alive.txt
+http://devjava02-haodash-dashboard-stage.wvrgroup.internal:8080/alive.txt
+
+http://haodash-dashboard-usprd-01.aus1.homeaway.live:8080/alive.txt
+http://haodash-dashboard-usprd-02.aus1.homeaway.live:8080/alive.txt
+
+google site:%search%
+
+style="width: 120px;"
+width: 100px;
+height: 20px;
+background-color: #fff;
+color: #999;
+margin: 0px, 0px, 0px, 0px;
+padding: 0px, 0px, 0px, 0px;
+border: 0px, 0px, 0px, 0px;
+vertical-align: middle;
+horizontal-align: middle;
+white-space: nowrap;
+
+<dependency>
+	<groupId>com.homeaway.bluesun</groupId>
+	<artifactId>ui_core</artifactId>
+	<version>LOCAL</version>
+</dependency>
+
+map/reduce; clipboard grep tool to leave only >>> and exceptions
+
+file extentions menu
+
+add escape chars func http://www.autohotkey.com/docs/commands/_EscapeChar.htm
+
+skype-menu:
+Список поддерживаемых в скайпе тегов:
+    зачёркивание (<s> </s>);
+    подчёркивание (<u> </u>);
+    цвет текста (<font color="#ff0000" size="15"> </font>), можно использовать только параметры вида #aaaaaa;
+    маркированные и нумерованные списки (<ul> <li> </li> </ul>, <ol> <li> </li> </ol>);
+    внешние ссылки (<a href="http://wikipedia.org">wikipedia.org</a>)
+    мигающий текст (<blink> </blink>));
+    изменение размера текста (<font size="25">большой текст</font>);
+    жирный шрифт и курсив (<b></b> и <i></i>);
+"""
