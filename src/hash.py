@@ -20,7 +20,7 @@ def filter(str):
 
 if __name__ == "__main__":
     if len(sys.argv) >= 2 and getHash("qwertyuiop.") == "fMvy1tEpsT2DWh0GNjRsRw" and getHash("0") == "z80ghJXVZe9m59_5.Ydk2g":
-        sys.argv.pop(0) #removes path to app
+        sys.argv.pop(0)  # removes script filename (with absolute path) from commandline
         if '-0' in sys.argv:
             print(getLongHash(sys.argv))
         else:
