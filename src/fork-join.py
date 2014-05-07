@@ -3,6 +3,7 @@ import sys
 import pickle
 import os.path
 from subprocess import call
+import subprocess
 
 version = 0.1
 description = """fork/join/drop is a simplified git workflow model
@@ -13,10 +14,10 @@ drop
 
 stack = []
 script_filename = "fork-join.py"
-working_dir = ""
-stack_filename = ".stack"
+working_dir = None
+git_repo_dir = None
+stack_file_path = None
 mainline_branch = "master"  # if stack is empty - return master branch
-stack_file_path = working_dir + stack_filename
 
 # pops branch name from stack
 def pop():
@@ -39,13 +40,27 @@ def push(name):
     save_stack()
 
 def save_stack():
-    with open(stack_file_path, 'wb+') as f:
+    with open(get_stack_file(), 'wb+') as f:
         pickle.dump(stack, f)
 
+def get_git_repo_dir():
+    p = subprocess.Popen(['git', 'rev-parse', '--show-toplevel'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    out, err = p.communicate()
+    if err:
+        print err
+        sys.exit(1)
+    return out.replace("\n", "")
+
+def get_stack_file():
+    global stack_file_path
+    if not stack_file_path:
+        stack_file_path = os.path.join(git_repo_dir, ".stack")
+    return stack_file_path
+
 def init():
-    if os.path.isfile(stack_file_path):
+    if os.path.isfile(get_stack_file()):
     #open(stack_file_path, 'a').close() #Creates empty file if it's not exists
-        with open(stack_file_path, 'rb') as f:
+        with open(get_stack_file(), 'rb') as f:
             stack2 = pickle.load(f)
         for x in stack2:
             stack.append(x)
@@ -53,6 +68,7 @@ def init():
 def fork(name):
     print "[fork] " + str(name)
     push(name)
+    print "stack:"
     print stack
     call(["git", "branch", name])
     call(["git", "checkout", name])
@@ -77,6 +93,7 @@ if __name__ == "__main__" and len(sys.argv) >= 2:
     sys.argv.pop(0)  # removes script filename (with absolute path) from commandline
     method = sys.argv.pop(0)
     working_dir = sys.argv.pop(0)
+    git_repo_dir = get_git_repo_dir()
 
     if method == "fork":
         init()
